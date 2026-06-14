@@ -1,0 +1,1327 @@
+================================================================================
+                    TELCO CUSTOMER CHURN ANALYSIS & PREDICTION
+================================================================================
+
+PHASE 1 : DATA UNDERSTANDING & CLEANING
+Project Documentation
+
+================================================================================
+1. PROJECT OBJECTIVE
+================================================================================
+
+The objective of this phase was to understand the structure of the IBM Telco
+Customer Churn dataset, identify data quality issues, perform data cleaning,
+and prepare a reliable dataset for Exploratory Data Analysis (EDA), Power BI
+dashboard creation, and Machine Learning modeling.
+
+--------------------------------------------------------------------------------
+
+Dataset Name : IBM Telco Customer Churn Dataset
+Source       : IBM Sample Dataset
+Project Type : Customer Churn Analysis & Prediction
+
+================================================================================
+2. DATASET OVERVIEW
+================================================================================
+
+Original Dataset Statistics:
+
+-----------------------------------------------------
+Total Records      : 7,043
+Total Features     : 21
+Duplicate Records  : 0
+Reported Nulls     : 0
+-----------------------------------------------------
+
+The dataset contains information related to customer demographics,
+telecommunication services, billing information, and churn status.
+
+================================================================================
+3. INITIAL DATA INSPECTION
+================================================================================
+
+The dataset was inspected using:
+
+-----------------------------------------------------
+df.info()
+df.describe()
+df.describe(include='object')
+-----------------------------------------------------
+
+Initial Data Types:
+
+-----------------------------------------------------
+String (Object) Columns : 18
+Integer Columns         : 2
+Float Columns           : 1
+-----------------------------------------------------
+
+Observation:
+
+Although TotalCharges represents numerical values, it was stored as
+an object (string) datatype.
+
+================================================================================
+4. DUPLICATE VALUE ANALYSIS
+================================================================================
+
+Duplicate records were checked using:
+
+-----------------------------------------------------
+df.duplicated().sum()
+-----------------------------------------------------
+
+Result:
+
+-----------------------------------------------------
+Duplicate Records Found : 0
+-----------------------------------------------------
+
+Conclusion:
+
+No duplicate observations were present in the dataset.
+
+================================================================================
+5. MISSING VALUE ANALYSIS
+================================================================================
+
+Initial missing value inspection:
+
+-----------------------------------------------------
+df.isnull().sum()
+-----------------------------------------------------
+
+Result:
+
+-----------------------------------------------------
+Total Missing Values : 0
+-----------------------------------------------------
+
+Observation:
+
+The dataset appeared to contain no missing values.
+
+However, further investigation revealed hidden missing values.
+
+================================================================================
+6. HIDDEN MISSING VALUES DETECTION
+================================================================================
+
+The following code was used:
+
+-----------------------------------------------------
+(df["TotalCharges"] == " ").sum()
+-----------------------------------------------------
+
+Result:
+
+-----------------------------------------------------
+Blank Values Found : 11
+-----------------------------------------------------
+
+Conclusion:
+
+The TotalCharges column contained 11 hidden missing values
+stored as blank spaces.
+
+================================================================================
+7. DATA CLEANING PROCEDURES
+================================================================================
+
+-----------------------------------------------------
+STEP 1 : Replace Blank Spaces
+-----------------------------------------------------
+
+Code:
+
+df["TotalCharges"] = df["TotalCharges"].replace(" ", np.nan)
+
+Purpose:
+
+Convert hidden blank values into actual missing values.
+
+-----------------------------------------------------
+STEP 2 : Convert Data Type
+-----------------------------------------------------
+
+Code:
+
+df["TotalCharges"] = pd.to_numeric(df["TotalCharges"])
+
+Purpose:
+
+Convert TotalCharges from string to numeric format.
+
+-----------------------------------------------------
+STEP 3 : Investigate Missing Records
+-----------------------------------------------------
+
+Observation:
+
+All 11 affected customers had:
+
+Tenure = 0 months
+
+Conclusion:
+
+These customers were newly joined customers with no accumulated charges.
+
+-----------------------------------------------------
+STEP 4 : Remove Invalid Records
+-----------------------------------------------------
+
+Code:
+
+df.dropna(inplace=True)
+
+Purpose:
+
+Remove records containing invalid TotalCharges values.
+
+================================================================================
+8. DATASET AFTER CLEANING
+================================================================================
+
+Cleaned Dataset Statistics:
+
+-----------------------------------------------------
+Rows Remaining     : 7,032
+Columns            : 21
+Missing Values     : 0
+Duplicate Values   : 0
+Rows Removed       : 11
+-----------------------------------------------------
+
+Conclusion:
+
+The dataset is now complete and ready for analysis.
+
+================================================================================
+9. TARGET VARIABLE PREPARATION
+================================================================================
+
+Target Variable:
+
+-----------------------------------------------------
+Churn
+-----------------------------------------------------
+
+Original Values:
+
+-----------------------------------------------------
+Yes
+No
+-----------------------------------------------------
+
+Converted Values:
+
+-----------------------------------------------------
+No   = 0
+Yes  = 1
+-----------------------------------------------------
+
+Code:
+
+df["Churn"] = df["Churn"].map({
+    "No": 0,
+    "Yes": 1
+})
+
+Purpose:
+
+Prepare the target variable for Machine Learning models.
+
+================================================================================
+10. CHURN DISTRIBUTION
+================================================================================
+
+Final Churn Distribution:
+
+-----------------------------------------------------
+Stayed Customers (0)   : 5,163
+Churned Customers (1)  : 1,869
+-----------------------------------------------------
+
+Percentage Distribution:
+
+-----------------------------------------------------
+Stayed Customers   : 73.4%
+Churned Customers  : 26.6%
+-----------------------------------------------------
+
+Observation:
+
+Approximately one out of every four customers has churned.
+
+Conclusion:
+
+The dataset is moderately imbalanced, which should be considered
+during model development.
+
+================================================================================
+11. FINAL DATA TYPES
+================================================================================
+
+After Cleaning:
+
+-----------------------------------------------------
+String (Object) Columns : 16
+Integer Columns         : 3
+Float Columns           : 2
+-----------------------------------------------------
+
+Data Type Corrections:
+
+-----------------------------------------------------
+TotalCharges : Object  → Float64
+Churn         : Object  → Int64
+-----------------------------------------------------
+
+================================================================================
+12. CLEAN DATASET EXPORT
+================================================================================
+
+The cleaned dataset was exported using:
+
+-----------------------------------------------------
+df.to_csv(
+    "../Datasets/Telco-Customer-Churn-Cleaned.csv",
+    index=False
+)
+-----------------------------------------------------
+
+Output File:
+
+-----------------------------------------------------
+Datasets/
+└── Telco-Customer-Churn-Cleaned.csv
+-----------------------------------------------------
+
+Purpose:
+
+This dataset will be used in all subsequent phases of the project.
+
+================================================================================
+13. KEY FINDINGS
+================================================================================
+
+• The dataset initially appeared to have no missing values.
+
+• Hidden missing values were identified within the TotalCharges column.
+
+• A total of 11 invalid records were detected.
+
+• All invalid records belonged to customers with zero tenure.
+
+• After cleaning, 7,032 valid customer records remained.
+
+• Approximately 26.6% of customers had churned.
+
+• The dataset is suitable for business analysis and predictive modeling.
+
+================================================================================
+14. PHASE 1 SUMMARY
+================================================================================
+
+Phase 1 successfully transformed the raw IBM Telco Customer Churn
+dataset into a high-quality analytical dataset.
+
+Achievements:
+
+-----------------------------------------------------
+✓ Dataset structure understood
+✓ Duplicate values checked
+✓ Hidden missing values identified
+✓ Data types corrected
+✓ Invalid records removed
+✓ Churn variable encoded
+✓ Clean dataset exported
+-----------------------------------------------------
+
+Final Output:
+
+A clean, reliable dataset prepared for:
+
+-----------------------------------------------------
+• Exploratory Data Analysis (EDA)
+• Power BI Dashboard Development
+• Machine Learning Modeling
+-----------------------------------------------------
+
+================================================================================
+PHASE 2 : EXPLORATORY DATA ANALYSIS (EDA)
+================================================================================
+
+Objective:
+
+Identify the major factors contributing to customer churn and generate
+actionable business insights that can support customer retention
+strategies.
+
+================================================================================
+1. ANALYSES PERFORMED
+================================================================================
+
+The following EDA analyses were completed using the cleaned Telco dataset:
+
+-----------------------------------------------------
+1. Churn Distribution Analysis
+2. Contract Type vs Churn
+3. Tenure vs Churn
+4. Monthly Charges vs Churn
+5. Internet Service vs Churn
+6. Payment Method vs Churn
+7. Tech Support vs Churn
+8. Online Security vs Churn
+9. Senior Citizen vs Churn
+-----------------------------------------------------
+
+================================================================================
+2. VISUALIZATIONS GENERATED
+================================================================================
+
+The following visualization files were generated and saved in the Images folder:
+
+-----------------------------------------------------
+churn_distribution_count.png
+churn_distribution_pie.png
+contract_vs_churn.png
+tenure_distribution.png
+tenure_vs_churn.png
+monthly_charges_distribution.png
+monthly_charges_vs_churn.png
+internet_service_vs_churn.png
+payment_method_vs_churn.png
+techsupport_vs_churn.png
+online_security_vs_churn.png
+senior_citizen_vs_churn.png
+-----------------------------------------------------
+
+================================================================================
+3. KEY EDA FINDINGS
+================================================================================
+
+Overall Churn:
+
+-----------------------------------------------------
+Stayed Customers  : 73.42%
+Churned Customers : 26.58%
+-----------------------------------------------------
+
+Observation:
+
+Approximately one out of every four customers has churned.
+
+Contract Type:
+
+-----------------------------------------------------
+Month-to-month Churn Rate : 42.71%
+One year Churn Rate       : 11.28%
+Two year Churn Rate       : 2.85%
+-----------------------------------------------------
+
+Observation:
+
+Month-to-month customers are significantly more likely to churn than customers
+on one-year or two-year contracts.
+
+Tenure:
+
+-----------------------------------------------------
+Median Tenure - Churned Customers : 10 months
+Median Tenure - Stayed Customers  : 38 months
+-----------------------------------------------------
+
+Observation:
+
+Customers who churn usually have much shorter tenure.
+
+Monthly Charges:
+
+-----------------------------------------------------
+Average Monthly Charges - Churned Customers : 74.44
+Average Monthly Charges - Stayed Customers  : 61.31
+-----------------------------------------------------
+
+Observation:
+
+Customers who churn tend to pay higher monthly charges.
+
+Internet Service:
+
+-----------------------------------------------------
+Fiber optic Churn Rate        : 41.89%
+DSL Churn Rate                : 19.00%
+No internet service Churn Rate: 7.43%
+-----------------------------------------------------
+
+Observation:
+
+Fiber optic customers show the highest churn risk.
+
+Payment Method:
+
+-----------------------------------------------------
+Electronic check Churn Rate          : 45.29%
+Mailed check Churn Rate              : 19.20%
+Bank transfer automatic Churn Rate   : 16.73%
+Credit card automatic Churn Rate     : 15.25%
+-----------------------------------------------------
+
+Observation:
+
+Electronic check users are the highest-risk payment segment.
+
+Support and Security Services:
+
+-----------------------------------------------------
+No Tech Support Churn Rate      : 41.65%
+With Tech Support Churn Rate    : 15.20%
+No Online Security Churn Rate   : 41.78%
+With Online Security Churn Rate : 14.64%
+-----------------------------------------------------
+
+Observation:
+
+Customers without Tech Support or Online Security are more likely to leave.
+
+Senior Citizen:
+
+-----------------------------------------------------
+Senior Citizen Churn Rate     : 41.68%
+Non-Senior Citizen Churn Rate : 23.65%
+-----------------------------------------------------
+
+Observation:
+
+Senior citizens churn more frequently than non-senior customers.
+
+================================================================================
+4. BUSINESS INSIGHTS
+================================================================================
+
+1. The overall churn rate is 26.58%, meaning roughly one in four customers has
+   left the company.
+
+2. Month-to-month customers have the highest churn rate, showing that weak
+   contract commitment is a major churn driver.
+
+3. One-year and two-year contracts show substantially lower churn, indicating
+   that long-term contracts improve customer retention.
+
+4. Customers who churn have much shorter tenure, which makes the early customer
+   lifecycle a critical retention window.
+
+5. Churned customers pay higher average monthly charges, suggesting price
+   sensitivity among higher-bill customers.
+
+6. Fiber optic customers show elevated churn compared with DSL and no-internet
+   customers.
+
+7. Electronic check users have the highest churn rate among payment methods.
+
+8. Customers without Tech Support are more likely to churn, highlighting support
+   availability as a retention lever.
+
+9. Customers without Online Security show higher churn, indicating that
+   value-added service adoption can strengthen retention.
+
+10. Senior citizens churn at a higher rate than non-senior customers and may
+    require targeted retention offers.
+
+================================================================================
+5. EXPECTED OUTCOMES
+================================================================================
+
+This phase uncovered behavioral, billing, contract, and service-related patterns
+associated with customer churn. The findings can support:
+
+-----------------------------------------------------
+Executive reporting
+Power BI dashboard development
+Customer retention strategy formulation
+Feature selection for Machine Learning models
+-----------------------------------------------------
+
+================================================================================
+6. PHASE 2 DELIVERABLES
+================================================================================
+
+-----------------------------------------------------
+EDA Python Script
+Business Insight Generation
+Visualization Assets
+Documentation Updates
+Power BI Preparation
+Machine Learning Preparation
+-----------------------------------------------------
+
+================================================================================
+PHASE 4 : MACHINE LEARNING - CHURN PREDICTION
+================================================================================
+
+Objective:
+
+Develop predictive models capable of identifying customers at risk of churn
+and support proactive retention strategies.
+
+--------------------------------------------------------------------------------
+
+Models Developed:
+
+-----------------------------------------------------
+Logistic Regression
+Decision Tree
+Random Forest
+-----------------------------------------------------
+
+================================================================================
+1. EVALUATION METRICS
+================================================================================
+
+The models were evaluated using:
+
+-----------------------------------------------------
+Accuracy
+Precision
+Recall
+F1 Score
+ROC-AUC Score
+Confusion Matrix
+Classification Report
+-----------------------------------------------------
+
+================================================================================
+2. BEST MODEL
+================================================================================
+
+Model Information:
+
+Best Model            : Random Forest
+
+Accuracy              : 75.20%
+Precision             : 52.22%
+Recall                : 78.61%
+F1 Score              : 62.75%
+ROC-AUC Score         : 83.60%
+
+Cross Validation Mean : 84.40%
+Cross Validation Std  : 1.29%
+
+Deployment Threshold  : 59.05%
+
+Number of Features    : 30
+
+Selection Criteria:
+
+The best model was selected using ROC-AUC as the primary metric, with recall
+and F1 score used as secondary metrics.
+
+================================================================================
+3. ARTIFACTS GENERATED
+================================================================================
+
+Models:
+
+-----------------------------------------------------
+logistic_regression.pkl
+decision_tree.pkl
+random_forest.pkl
+scaler.pkl
+best_model.pkl
+model_info.txt
+-----------------------------------------------------
+
+Datasets:
+
+-----------------------------------------------------
+model_comparison.csv
+Telco_Customer_Predictions.csv
+-----------------------------------------------------
+
+Images:
+
+-----------------------------------------------------
+model_comparison.png
+confusion_matrix_logistic.png
+confusion_matrix_decision_tree.png
+confusion_matrix_random_forest.png
+roc_curves.png
+feature_importance.png
+-----------------------------------------------------
+
+================================================================================
+4. EXPECTED OUTCOMES
+================================================================================
+
+The Machine Learning phase enables the business to:
+
+-----------------------------------------------------
+Predict customer churn accurately
+Identify high-risk customers
+Understand the factors driving churn
+Provide actionable retention recommendations
+Supply predictions for Power BI integration
+-----------------------------------------------------
+
+================================================================================
+5. PHASE 4 DELIVERABLES
+================================================================================
+
+-----------------------------------------------------
+Machine Learning Pipeline
+Model Comparison
+Saved Models
+Prediction Dataset
+Feature Importance Analysis
+Evaluation Visualizations
+Documentation Updates
+-----------------------------------------------------
+
+================================================================================
+PHASE 5 : LIVE CUSTOMER CHURN PREDICTION APPLICATION
+================================================================================
+
+Objective:
+Develop a live web-based application that allows users to predict customer
+churn risk using the trained Machine Learning model through an interactive
+interface.
+
+--------------------------------------------------------------------------------
+
+Overview:
+
+After successfully completing Data Understanding, Data Cleaning,
+Exploratory Data Analysis, and Machine Learning phases, a Streamlit-based
+web application was developed to provide real-time churn predictions.
+
+The application enables users to input customer information and instantly
+receive churn predictions, probability scores, and risk assessments.
+
+--------------------------------------------------------------------------------
+
+Technologies Used:
+
+• Python
+• Streamlit
+• Pandas
+• Joblib
+• Plotly
+• Scikit-Learn
+• Random Forest Classifier
+
+--------------------------------------------------------------------------------
+
+Model Information:
+
+Best Model            : Random Forest
+
+Accuracy              : 75.20%
+Precision             : 52.22%
+Recall                : 78.61%
+F1 Score              : 62.75%
+ROC-AUC Score         : 83.60%
+
+Cross Validation Mean : 84.40%
+Cross Validation Std  : 1.29%
+
+Deployment Threshold  : 59.05%
+
+Number of Features    : 30
+
+--------------------------------------------------------------------------------
+
+Application Features:
+
+✓ Home Page
+
+    • Project Overview
+    • Business Objective
+    • Key Features
+    • Model Performance Summary
+
+✓ Prediction Page
+
+    • Customer Information Input
+    • Service Information Input
+    • Billing Information Input
+    • Predict Churn Button
+
+✓ Prediction Results
+
+    • Churn Prediction
+    • Churn Probability
+    • Risk Categorization
+    • Risk Meter (Gauge Chart)
+
+✓ Business Insights
+
+    • Potential Churn Drivers
+    • High-Risk Customer Identification
+
+✓ Model Transparency
+
+    • Model Performance Metrics
+    • Cross Validation Results
+    • Deployment Threshold
+    • Number of Features
+
+✓ About Page
+
+    • Dataset Information
+    • Technologies Used
+    • Project Objective
+    • Developer Information
+
+--------------------------------------------------------------------------------
+
+Input Variables Used:
+
+Customer Information:
+
+• Gender
+• Senior Citizen
+• Partner
+• Dependents
+• Tenure
+
+Service Information:
+
+• Phone Service
+• Multiple Lines
+• Internet Service
+• Online Security
+• Online Backup
+• Device Protection
+• Tech Support
+• Streaming TV
+• Streaming Movies
+
+Billing Information:
+
+• Monthly Charges
+• Estimated Total Charges
+• Contract Type
+• Paperless Billing
+• Payment Method
+
+--------------------------------------------------------------------------------
+
+Prediction Workflow:
+
+User Input
+      ↓
+Feature Encoding
+      ↓
+Feature Alignment
+      ↓
+Random Forest Model
+      ↓
+Probability Generation
+      ↓
+Threshold Application (59.05%)
+      ↓
+Risk Categorization
+      ↓
+Result Visualization
+
+--------------------------------------------------------------------------------
+
+Risk Categories:
+
+Low Risk:
+
+Probability < 59.05%
+
+Medium Risk:
+
+59.05% ≤ Probability < 80%
+
+High Risk:
+
+Probability ≥ 80%
+
+--------------------------------------------------------------------------------
+
+Artifacts Generated:
+
+LIVE/
+
+• app.py
+• requirements.txt
+
+Models/
+
+• best_model.pkl
+• feature_names.pkl
+• scaler.pkl
+
+--------------------------------------------------------------------------------
+
+Deployment Strategy:
+
+Local Execution:
+
+streamlit run app.py
+
+Cloud Deployment:
+
+Platform:
+Streamlit Community Cloud
+
+Deployment File:
+
+LIVE/app.py
+
+Repository:
+GitHub
+
+--------------------------------------------------------------------------------
+
+Business Value:
+
+• Identify customers at risk of leaving.
+• Support proactive retention campaigns.
+• Enable real-time churn assessment.
+• Improve decision-making through predictive analytics.
+• Bridge the gap between Machine Learning models and business users.
+
+--------------------------------------------------------------------------------
+
+Phase 5 Deliverables:
+
+✓ Interactive Streamlit Application
+✓ Live Churn Prediction Interface
+✓ Risk Visualization Dashboard
+✓ Real-Time Prediction Capability
+✓ Business-Oriented Explanations
+✓ Deployment-Ready Solution
+
+--------------------------------------------------------------------------------
+
+Developer Information:
+
+Built By:
+Arun Sharma
+
+Project:
+Telco Customer Churn Prediction System
+
+Purpose:
+Demonstrate end-to-end predictive analytics capabilities using Python,
+Machine Learning, Power BI, and live deployment technologies.
+
+----------------------------------------------------------------------
+
+==================================================================
+Phase 6: POWER BI DOCUMENTATION
+==================================================================
+
+------------------------------------------------------------------
+1. OVERVIEW
+------------------------------------------------------------------
+
+The Power BI dashboard was developed to transform machine learning
+churn predictions into actionable business insights. The dashboard
+combines descriptive analytics, diagnostic analytics, and predictive
+analytics to help stakeholders understand customer behaviour,
+identify churn drivers, and prioritize retention strategies.
+
+The completed dashboard consists of three interactive pages:
+• Customer Health Overview
+• Churn Intelligence
+• Predictive Analysis
+
+
+------------------------------------------------------------------
+2. OBJECTIVES
+------------------------------------------------------------------
+
+The dashboard was designed to:
+
+• Monitor overall customer health.
+• Understand factors contributing to churn.
+• Visualize machine learning prediction outcomes.
+• Segment customers based on churn risk.
+• Enable interactive exploration.
+• Provide access to the deployed prediction model.
+• Support data-driven business decisions.
+
+
+------------------------------------------------------------------
+3. DATA SOURCE
+------------------------------------------------------------------
+
+Dataset Used:
+
+Telco_Customer_Predictions.csv
+
+The dataset contains:
+
+Customer Information:
+• Customer ID
+• Gender
+• Senior Citizen
+• Partner
+• Dependents
+
+Service Information:
+• Phone Service
+• Multiple Lines
+• Internet Service
+• Online Security
+• Online Backup
+• Device Protection
+• Tech Support
+• Streaming TV
+• Streaming Movies
+
+Billing Information:
+• Contract
+• Paperless Billing
+• Payment Method
+• Monthly Charges
+• Total Charges
+• Tenure
+
+Machine Learning Outputs:
+• Actual Churn Status
+• Predicted Churn Status
+• Churn Probability
+• Risk Category
+
+
+------------------------------------------------------------------
+4. DASHBOARD THEME
+------------------------------------------------------------------
+
+Theme Name:
+Aurora Predictive Theme
+
+Design Philosophy:
+• Premium SaaS appearance
+• Executive storytelling
+• Minimalistic visual design
+• Light theme interface
+• Soft shadows
+• Rounded cards
+• Consistent iconography
+
+Color Palette:
+
+Primary Indigo     : #6366F1
+Secondary Violet   : #A855F7
+Crystal Cyan       : #06B6D4
+Emerald            : #10B981
+Golden Amber       : #FBBF24
+Rose Coral         : #FB7185
+Background         : #F6F7FB
+
+Typography:
+Segoe UI
+
+
+==================================================================
+PAGE 1 : CUSTOMER HEALTH OVERVIEW
+==================================================================
+
+Question Answered:
+"What is happening?"
+
+
+------------------------------------------------------------------
+Purpose
+------------------------------------------------------------------
+
+Provide a snapshot of the current customer base and churn status.
+
+
+------------------------------------------------------------------
+KPIs
+------------------------------------------------------------------
+
+• Total Customers
+• Actual Churn Rate
+• Predicted Churn Rate
+• Average Churn Probability
+• High Risk Customers
+
+
+------------------------------------------------------------------
+Visuals
+------------------------------------------------------------------
+
+1. Customer Health Distribution
+   Type:
+   Donut Chart
+
+   Purpose:
+   Displays the proportion of churned and retained customers.
+
+
+2. Contract Impact
+   Type:
+   Clustered Column Chart
+
+   Purpose:
+   Shows churn rate across contract types.
+
+
+3. Internet Service & Churn
+   Type:
+   Stacked Bar Chart
+
+   Purpose:
+   Compares churn patterns by internet service category.
+
+
+------------------------------------------------------------------
+Filters
+------------------------------------------------------------------
+
+• Contract
+• Internet Service
+• Payment Method
+
+
+------------------------------------------------------------------
+Business Insights
+------------------------------------------------------------------
+
+• Month-to-month customers exhibit the highest churn.
+• Fiber optic users contribute significantly to churn.
+• Contract upgrades represent retention opportunities.
+
+
+==================================================================
+PAGE 2 : CHURN INTELLIGENCE
+==================================================================
+
+Question Answered:
+"Why is it happening?"
+
+
+------------------------------------------------------------------
+Purpose
+------------------------------------------------------------------
+
+Identify customer characteristics and service patterns that
+influence churn behaviour.
+
+
+------------------------------------------------------------------
+KPIs
+------------------------------------------------------------------
+
+• Month-to-Month Customers
+• Fiber Optic Users
+• E-Check Users
+• No Tech Support Customers
+• Average Tenure
+
+
+------------------------------------------------------------------
+Visuals
+------------------------------------------------------------------
+
+1. Contract Type vs Actual Churn
+   Type:
+   Clustered Column Chart
+
+   Purpose:
+   Identifies which contract groups churn the most.
+
+
+2. Internet Service vs Predicted Churn
+   Type:
+   Stacked Bar Chart
+
+   Purpose:
+   Compares predicted churn across internet services.
+
+
+3. Payment Method vs Churn
+   Type:
+   Clustered Bar Chart
+
+   Purpose:
+   Highlights churn differences by payment method.
+
+
+------------------------------------------------------------------
+Filters
+------------------------------------------------------------------
+
+• Gender
+• Senior Citizen
+• Partner
+
+
+------------------------------------------------------------------
+Business Insights
+------------------------------------------------------------------
+
+• Month-to-month contracts have elevated churn.
+• Fiber optic customers show higher churn tendencies.
+• Electronic check users are more likely to churn.
+
+
+==================================================================
+PAGE 3 : PREDICTIVE ANALYSIS
+==================================================================
+
+Question Answered:
+"What is likely to happen next?"
+
+
+------------------------------------------------------------------
+Purpose
+------------------------------------------------------------------
+
+Present machine learning predictions and future customer
+risk segmentation.
+
+
+------------------------------------------------------------------
+KPIs
+------------------------------------------------------------------
+
+• High Risk Customers
+• Medium Risk Customers
+• Low Risk Customers
+• Predicted Churn
+• Model Confidence
+
+
+------------------------------------------------------------------
+Visuals
+------------------------------------------------------------------
+
+1. Risk Category Distribution
+   Type:
+   Donut Chart
+
+   Purpose:
+   Displays the proportion of High, Medium, and Low Risk
+   customers.
+
+
+2. Actual vs Predicted Churn
+   Type:
+   Clustered Column Chart
+
+   Purpose:
+   Evaluates alignment between model predictions and
+   actual outcomes.
+
+
+3. Risk Segmentation by Contract
+   Type:
+   Stacked Bar Chart
+
+   Purpose:
+   Identifies contract groups with the highest future risk.
+
+
+------------------------------------------------------------------
+Live Prediction Center
+------------------------------------------------------------------
+
+Purpose:
+Provide direct access to the deployed machine learning model.
+
+Features:
+• Redirects users to the live Streamlit application.
+• Enables real-time churn prediction.
+• Demonstrates deployment capability.
+• Completes the end-to-end analytics workflow.
+
+
+------------------------------------------------------------------
+Filters
+------------------------------------------------------------------
+
+• Risk Category
+• Predicted Churn Status
+• Contract
+
+
+==================================================================
+DAX MEASURES USED
+==================================================================
+
+Measures Table:
+
+• Total Customers
+• Actual Churn
+• Actual Churn Rate
+• Predicted Churn
+• Predicted Churn Rate
+• Average Churn Probability
+• High Risk Customers
+• Medium Risk Customers
+• Low Risk Customers
+
+
+==================================================================
+USER INTERACTION FEATURES
+==================================================================
+
+• Interactive slicers
+• Cross-filtering
+• Dynamic KPIs
+• Risk segmentation
+• Live prediction redirection
+• Responsive storytelling
+• Drill-through analysis
+
+
+==================================================================
+BUSINESS VALUE
+==================================================================
+
+The dashboard enables organizations to:
+
+• Detect emerging churn patterns.
+• Identify vulnerable customer groups.
+• Prioritize retention campaigns.
+• Evaluate prediction outcomes.
+• Improve customer lifetime value.
+• Support strategic decision-making.
+
+
+==================================================================
+CONCLUSION
+==================================================================
+
+The Customer Churn Intelligence Platform integrates
+Business Intelligence and Machine Learning into a unified
+decision-support system.
+
+By combining historical analysis, churn driver exploration,
+predictive modelling, and live deployment capabilities,
+the solution provides an end-to-end view of customer
+retention performance.
+
+This project demonstrates expertise in:
+
+• Power BI Dashboard Development
+• DAX and Data Modelling
+• Machine Learning Integration
+• Predictive Analytics
+• Interactive Reporting
+• Deployment-Oriented Analytics
+
+
+==================================================================
+DEVELOPED BY
+==================================================================
+
+Arun Sharma
+
+Data Analyst | Machine Learning Enthusiast
+
+Customer Churn Intelligence Platform
+AI-Powered Customer Retention & Predictive Analytics
+
+==================================================================

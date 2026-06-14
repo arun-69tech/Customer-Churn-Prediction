@@ -1,0 +1,17 @@
+Best Model Name: Random Forest
+Training Date: 2026-06-14 16:08:25
+Number of Features: 30
+
+Evaluation Metrics:
+Accuracy: 0.7520
+Precision: 0.5222
+Recall: 0.7861
+F1 Score: 0.6275
+ROC-AUC: 0.8360
+
+Cross Validation:
+Mean ROC-AUC: 0.8440
+Std ROC-AUC: 0.0129
+
+Deployment Threshold:
+Optimal Threshold: 0.5905

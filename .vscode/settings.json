@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "D:\\Github Repo\\.venv\\Scripts\\python.exe",
+  "python.terminal.activateEnvironment": true,
+  "terminal.integrated.defaultProfile.windows": "PowerShell (.venv)",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell (.venv)": {
+      "source": "PowerShell",
+      "args": [
+        "-NoExit",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "& 'D:\\Github Repo\\.venv\\Scripts\\Activate.ps1'"
+      ]
+    }
+  }
+}

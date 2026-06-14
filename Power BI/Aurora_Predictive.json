@@ -1,0 +1,149 @@
+{
+  "name": "Aurora Predictive",
+  "dataColors": [
+    "#4F46E5",
+    "#7C3AED",
+    "#10B981",
+    "#F59E0B",
+    "#EF4444",
+    "#60A5FA",
+    "#A78BFA",
+    "#34D399"
+  ],
+
+  "background": "#F8FAFC",
+  "foreground": "#111827",
+  "tableAccent": "#4F46E5",
+
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [
+          {
+            "show": true,
+            "fontSize": 13,
+            "fontFamily": "Segoe UI",
+            "color": {
+              "solid": {
+                "color": "#111827"
+              }
+            }
+          }
+        ],
+
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+
+        "border": [
+          {
+            "show": false
+          }
+        ],
+
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#6B7280"
+              }
+            },
+            "fontSize": 11,
+            "fontFamily": "Segoe UI"
+          }
+        ]
+      }
+    },
+
+    "card": {
+      "*": {
+        "categoryLabels": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#6B7280"
+              }
+            },
+            "fontSize": 11,
+            "fontFamily": "Segoe UI"
+          }
+        ],
+
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#111827"
+              }
+            },
+            "fontSize": 24,
+            "fontFamily": "Segoe UI"
+          }
+        ]
+      }
+    },
+
+    "slicer": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+
+        "items": [
+          {
+            "fontSize": 11,
+            "fontFamily": "Segoe UI",
+            "color": {
+              "solid": {
+                "color": "#111827"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI",
+      "fontSize": 18,
+      "color": "#111827"
+    },
+
+    "header": {
+      "fontFace": "Segoe UI",
+      "fontSize": 14,
+      "color": "#111827"
+    },
+
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 11,
+      "color": "#6B7280"
+    },
+
+    "callout": {
+      "fontFace": "Segoe UI",
+      "fontSize": 28,
+      "color": "#111827"
+    }
+  }
+}
