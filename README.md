@@ -2,6 +2,8 @@
 
 End-to-end customer churn analytics project combining Python, machine learning, Power BI, and a live Streamlit prediction app. The project analyzes telecom customer behavior, identifies churn drivers, predicts high-risk customers, and presents insights through an executive dashboard.
 
+[![Live App](https://img.shields.io/badge/Live%20Demo-Streamlit-red?logo=streamlit)](https://telco-churn-prediction-model.streamlit.app/)
+
 ![Project Overview](Dashboard%20Screenshot/cover_page.png)
 
 ## Project Objective
